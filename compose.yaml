@@ -1,0 +1,9 @@
+services:
+  app:
+    build:
+      context: .
+    environment:
+      GROQ_API_KEY: ''
+      TELEGRAM_BOT_TOKEN: ''
+    ports:
+      - 8325:8325

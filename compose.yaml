@@ -5,5 +5,6 @@ services:
     environment:
       GROQ_API_KEY: ''
       TELEGRAM_BOT_TOKEN: ''
+      CONTEXT: ''
     ports:
       - 8325:8325

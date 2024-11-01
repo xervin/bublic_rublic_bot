@@ -6,5 +6,7 @@ services:
       GROQ_API_KEY: ''
       TELEGRAM_BOT_TOKEN: ''
       CONTEXT: ''
+      MODEL: ''
     ports:
       - 8325:8325
+    restart: always

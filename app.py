@@ -38,7 +38,6 @@ def get_text_messages(message):
     if chat_id not in messages:
         messages[chat_id] = []
         messages[chat_id].append({"role": 'user', "content": first_context})
-        # Попытка установить контекст с моделью
         try:
             response = client.chat.completions.create(model=model, messages=messages[chat_id], temperature=0)
         except Exception as e:
@@ -47,7 +46,7 @@ def get_text_messages(message):
             return
 
     if message.chat.type in ['group', 'supergroup']:
-        if not bot_was_mentioned(message):
+        if not is_message_for_bot(message):
             rnd = random.randrange(1, 100)
             if rnd > 25:
                 return
@@ -64,6 +63,13 @@ def get_text_messages(message):
         print(f"Ошибка при получении ответа от модели: {str(e)}")
         bot.send_message(chat_id, "Произошла ошибка при получении ответа от модели. Пожалуйста, попробуйте позже.")
 
+def is_message_for_bot(message):
+    if bot_was_mentioned(message):
+        return True
+    if bot_was_replied_to(message):
+        return True
+    return False
+
 def bot_was_mentioned(message):
     if message.entities:
         for entity in message.entities:
@@ -71,6 +77,12 @@ def bot_was_mentioned(message):
                 mentioned_username = message.text[entity.offset:entity.offset + entity.length]
                 if mentioned_username.strip('@').lower() == bot_username.lower():
                     return True
+    return False
+
+def bot_was_replied_to(message):
+    if message.reply_to_message:
+        if message.reply_to_message.from_user.id == bot_info.id:
+            return True
     return False
 
 while True:

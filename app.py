@@ -48,9 +48,11 @@ def get_text_messages(message):
     if message.chat.type in ['group', 'supergroup']:
         if not is_message_for_bot(message):
             rnd = random.randrange(1, 100)
-            if rnd > 25:
+            if rnd > 20:
                 return
 
+    if len(messages[chat_id]) > 30:
+            messages[chat_id] = messages[chat_id][-30:]
     print(f"Chat ID: {chat_id}, Username: {username}, Text: {message.text}.")
     messages[chat_id].append({"role": 'user', "content": message.text})
 
